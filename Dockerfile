@@ -24,7 +24,9 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /usr/src/app
 
 # Copy the jar file into the container
-COPY app/*.jar app.jar
+# COPY app/*.jar app.jar
+COPY *.jar app.jar
+
 # COPY target/*.jar app.jar
 
 # Expose the necessary port
