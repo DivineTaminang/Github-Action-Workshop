@@ -54,7 +54,6 @@ jobs:
       run: |
         sudo apt update -y
         docker system prune -af
-        docker system prune -af
         sudo rm -rf ~/actions-runner/_work/_temp/*
         sudo docker system prune -af --volumes
         sudo rm -rf ~/actions-runner/_diag/*
@@ -77,6 +76,20 @@ jobs:
     needs: unit-test
 
     steps:
+    - name: Clean SonarScanner directory
+      run: |
+        sudo apt update -y
+        docker system prune -af --volumes
+        sudo rm -rf ~/actions-runner/_work/_temp/*
+        sudo docker system prune -af
+        sudo rm -rf ~/actions-runner/_diag/*
+        sudo apt clean -y
+        sudo apt autoremove -y
+        sudo apt autoclean -y
+        rm -rf /home/runner/work/_temp/sonar-scanner-cli-6.2.1.4610-Linux-X64
+        sudo dpkg -l 'linux-image*' | grep '^ii'
+        sudo truncate -s 0 /var/log/*.log
+        sudo journalctl --vacuum-time=7d
     - uses: actions/checkout@v4
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -112,24 +125,6 @@ jobs:
         sudo dpkg -l 'linux-image*' | grep '^ii'
         sudo truncate -s 0 /var/log/*.log
         sudo journalctl --vacuum-time=7d
-
-    # - name: Cache SonarQube scanner
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: ~/.sonar/cache
-    #     key: sonar-scanner-cli-7.1.0.4889-Linux-X64
-    # - name: Cache SonarScanner
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: ~/.sonar/cache
-    #     key: ${{ runner.os }}-sonar-${{ hashFiles('**/pom.xml') }}-v2
-    # - name: Cache SonarScanner
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: ~/.sonar/cache
-    #     key: sonar-scanner-${{ runner.os }}-v1
-    #     restore-keys: |
-    #       sonar-scanner-${{ runner.os }}-
 
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v5.2.0
