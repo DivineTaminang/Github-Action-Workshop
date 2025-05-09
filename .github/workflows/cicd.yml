@@ -61,7 +61,10 @@ jobs:
         sudo apt-get clean -y
         sudo apt-get autoremove -y
         sudo apt-get autoclean -y
-        sudo apt-get update -y
+        rm -rf ~/actions-runner/_work/_temp/*
+        rm -rf ~/actions-runner/_work/_tool/*
+        rm -rf ~/actions-runner/_work/_actions/*
+        sudo find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -k 5 -rh | head -20
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
     - uses: actions/checkout@v4
     - name: Clean SonarScanner directory
@@ -147,6 +150,10 @@ jobs:
         sudo journalctl --vacuum-time=1d
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo journalctl --vacuum-size=10M
+        rm -rf ~/actions-runner/_work/_temp/*
+        rm -rf ~/actions-runner/_work/_tool/*
+        rm -rf ~/actions-runner/_work/_actions/*
+        sudo find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -k 5 -rh | head -20
         # rm -rf ~/.cache/thumbnails/*
         # sudo apt-get autoremove --purge
 
@@ -179,7 +186,11 @@ jobs:
       run: |
         sudo apt-get update -y  
         sudo journalctl --vacuum-size=10M
-        sudo journalctl --vacuum-time=3d
+        sudo journalctl --vacuum-time=1d
+        rm -rf ~/actions-runner/_work/_temp/*
+        rm -rf ~/actions-runner/_work/_tool/*
+        rm -rf ~/actions-runner/_work/_actions/*
+        sudo find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -k 5 -rh | head -20
         # rm -rf ~/.cache/thumbnails/*
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         # sudo apt-get autoremove --purge
