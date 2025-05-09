@@ -57,13 +57,24 @@ jobs:
         sudo docker system prune -af --volumes
         sudo rm -rf ~/actions-runner/_diag/*
         sudo rm -rf /usr/share/donet /etc/mysql /etc/php
-
         sudo apt-get clean -y
         sudo apt-get autoremove -y
         sudo apt-get autoclean -y
         sudo apt-get update -y
         sudo rm -rf $"AGENT_TOOLSDIRECTORY"
     - uses: actions/checkout@v4
+    - name: Clean SonarScanner directory
+      run: |
+        docker system prune -af
+        sudo rm -rf ~/actions-runner/_work/_temp/*
+        sudo docker system prune -af --volumes
+        sudo rm -rf ~/actions-runner/_diag/*
+        sudo rm -rf /usr/share/donet /etc/mysql /etc/php
+        sudo apt-get clean -y
+        sudo apt-get autoremove -y
+        sudo apt-get autoclean -y
+        sudo apt-get update -y
+        sudo rm -rf $"AGENT_TOOLSDIRECTORY"
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
